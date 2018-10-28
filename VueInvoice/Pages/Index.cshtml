@@ -1,0 +1,45 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="container">
+
+    <div id="app" v-cloak>
+        <div class="row">
+            <div class="col-md-6">
+                <div v-for="invoice in invoices" class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Invoice #{{invoice.number}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li v-for="(item, index) in invoice.items"
+                                v-bind:class="{ even: index % 2 }"
+                                class="line-item">
+                                {{item.quantity}} {{item.name}} at ${{item.unitPrice}} ea: ${{item.totalPrice}}
+                                <button class="btn btn-sm btn-danger pull-right"
+                                        v-on:click="removeItem(invoice, index)">
+                                    X
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer">
+                        Total: ${{invoice.amount}}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<script>
+    // serialize seed data for the vue
+    var invoiceData = @Json.Serialize(Model.Invoices);
+</script>
